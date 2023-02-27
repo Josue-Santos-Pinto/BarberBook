@@ -1,4 +1,4 @@
-package com.myband;
+package com.devbarber;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

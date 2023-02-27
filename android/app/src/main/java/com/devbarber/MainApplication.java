@@ -1,4 +1,4 @@
-package com.myband;
+package com.devbarber;
 
 import android.app.Application;
 import com.facebook.react.PackageList;
