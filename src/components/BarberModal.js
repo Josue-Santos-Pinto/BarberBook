@@ -5,6 +5,7 @@ import styled from 'styled-components/native';
 import ExpandIcon from '../assets/expand.svg';
 import NavPrevIcon from '../assets/nav_prev.svg';
 import NavNextIcon from '../assets/nav_next.svg';
+import Api from '../Api';
 
 const Modal = styled.Modal``;
 const ModalArea = styled.View`
@@ -174,7 +175,33 @@ export default ({ show, setShow, user, service }) => {
     setSelectedMonth(mountDate.getMonth());
     setSelectedDay(0);
   };
-  const handleFinishClick = () => {};
+  const handleFinishClick = async () => {
+    if (
+      user.id &&
+      service != null &&
+      selectedYear > 0 &&
+      selectedMonth > 0 &&
+      selectedDay > 0 &&
+      selectedHour != null
+    ) {
+      let res = await Api.setAppointment(
+        user.id,
+        user.services[service].id,
+        selectedYear,
+        selectedMonth + 1,
+        selectedDay,
+        selectedHour
+      );
+      if (res.error == '') {
+        setShow(false);
+        navigation.navigate('Appointments');
+      } else {
+        alert(res.error);
+      }
+    } else {
+      alert('Preencha todos os dados');
+    }
+  };
 
   // USE EFFECTS
 
