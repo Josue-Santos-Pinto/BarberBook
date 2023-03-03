@@ -4,17 +4,14 @@ export const Container = styled.SafeAreaView`
   flex: 1;
   background-color: #63c2d1;
 `;
-export const SearchArea = styled.View`
-  background-color: #4eadbe;
-  height: 40px;
-  border-radius: 20px;
+export const HeaderArea = styled.View`
+  height: 50px;
+  justify-content: center;
   padding: 0 20px;
-  margin: 20px;
-  margin-bottom: 0;
 `;
-export const SearchInput = styled.TextInput`
-  flex: 1;
-  font-size: 16px;
+export const HeaderTitle = styled.Text`
+  font-size: 18px;
+  font-weight: bold;
   color: #fff;
 `;
 export const Scroller = styled.ScrollView`

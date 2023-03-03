@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { Text } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { RefreshControl } from 'react-native';
 import Api from '../../Api';
 import BarberItem from '../../components/BarberItem';
 import {
   Container,
-  SearchArea,
-  SearchInput,
+  HeaderArea,
+  HeaderTitle,
   Scroller,
   LoadingIcon,
   ListArea,
@@ -13,49 +13,36 @@ import {
 } from './styles';
 
 export default () => {
-  const [searchText, setSearchText] = useState('');
   const [loading, setLoading] = useState(false);
   const [list, setList] = useState([]);
-  const [emptyList, setEmptyList] = useState(false);
 
-  const searchBarbers = async () => {
-    setEmptyList(false);
+  const getFavorites = async () => {
     setLoading(true);
     setList([]);
 
-    if (searchText != '') {
-      let res = await Api.search(searchText);
-      if (res.error == '') {
-        if (res.list.length > 0) {
-          setList(res.list);
-        } else {
-          setEmptyList(true);
-        }
-      } else {
-        alert(res.error);
-      }
+    let res = await Api.getFavorites();
+    if (res.error == '') {
+      setList(res.list);
+    } else {
+      alert(res.error);
     }
+
     setLoading(false);
   };
 
+  useEffect(() => {
+    getFavorites();
+  }, []);
+
   return (
     <Container>
-      <SearchArea>
-        <SearchInput
-          placeholder="Digite o nome do barbeiro"
-          placeholderTextColor="#fff"
-          value={searchText}
-          onChangeText={(e) => setSearchText(e)}
-          onEndEditing={searchBarbers}
-          returnKeyType="search"
-          autoFocus
-          selectTextOnFocus
-        />
-      </SearchArea>
+      <HeaderArea>
+        <HeaderTitle>Favoritos</HeaderTitle>
+      </HeaderArea>
 
-      <Scroller>
-        {loading && <LoadingIcon size="large" color="#000" />}
-        {emptyList && <EmptyWarning>Não achamos barbeiros com o nome "{searchText}"</EmptyWarning>}
+      <Scroller refreshControl={<RefreshControl refreshing={loading} onRefresh={getFavorites} />}>
+        {!loading && list.length === 0 && <EmptyWarning>Não há favoritos</EmptyWarning>}
+
         <ListArea>
           {list.map((item, key) => (
             <BarberItem key={key} data={item} />
