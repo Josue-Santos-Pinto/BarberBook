@@ -125,11 +125,9 @@ export default {
     return json;
   },
   updateUser: async (body) => {
-    console.log(body);
     const token = await AsyncStorage.getItem('token');
 
     body.token = token;
-    console.log('token: ' + body.token);
     const req = await fetch(`${BASE_API}/user`, {
       method: 'PUT',
       headers: {

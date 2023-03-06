@@ -40,17 +40,17 @@ export default () => {
       if (newEmail != email) {
         var res = await Api.updateUser({ email: newEmail });
       }
-      if (password != '' && confirmPassword != '') {
+      if (password != '' || confirmPassword != '') {
         var res = await Api.updateUser({ password, password_confirm: confirmPassword });
+        console.log(res);
       }
       if (res.error == '') {
         alert('Informações do usuário alterada(s) com sucesso!');
         navigation.reset({ index: 1, routes: [{ name: 'Home' }] });
       } else {
-        for (let i in res.error) {
-          console.log(res.error.length);
-          alert(res.error[i]);
-        }
+        alert(
+          res.error?.password || res.error?.password_confirm || res.error?.name || res.error?.email
+        );
       }
     }
   };
