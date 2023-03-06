@@ -118,4 +118,33 @@ export default {
     const json = await req.json();
     return json;
   },
+  getAppointments: async () => {
+    const token = await AsyncStorage.getItem('token');
+    const req = await fetch(`${BASE_API}/user/appointments?token=${token}`);
+    const json = await req.json();
+    return json;
+  },
+  updateUser: async (body) => {
+    console.log(body);
+    const token = await AsyncStorage.getItem('token');
+
+    body.token = token;
+    console.log('token: ' + body.token);
+    const req = await fetch(`${BASE_API}/user`, {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
+    const json = await req.json();
+    return json;
+  },
+  getUserInfo: async () => {
+    const token = await AsyncStorage.getItem('token');
+    const req = await fetch(`${BASE_API}/user?token=${token}`);
+    const json = await req.json();
+    return json;
+  },
 };
